@@ -1,17 +1,13 @@
 import './App.css'
 import { ChangeEvent, useState } from 'react'
 import axios from 'axios'
+import { ChatMessage } from './types'
 
 function App() {
     const weatherBotUrl = 'http://localhost:3000/test'
     const [userInput, setUserInput] = useState('')
     const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
         setUserInput(event.target.value)
-
-    type ChatMessage = {
-        type: 'bot' | 'user'
-        message: string
-    }
 
     const defaultMessage: ChatMessage = {
         type: 'bot',
