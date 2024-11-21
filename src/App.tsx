@@ -2,6 +2,7 @@ import './App.css'
 import { ChangeEvent, useState } from 'react'
 import axios from 'axios'
 import { ChatMessage } from './types'
+import { ChatComponent } from './ChatComponent'
 
 function App() {
     const weatherBotUrl = 'http://localhost:3000/test'
@@ -16,21 +17,6 @@ function App() {
     }
 
     const [chat, setChat] = useState<Array<ChatMessage>>([defaultMessage])
-
-    function ChatComponent() {
-        return (
-            <>
-                {chat.map((message, index) => (
-                    <div
-                        key={index}
-                        className={`chat chat-${message.type === 'bot' ? 'start' : 'end'} ${message.type === 'bot' ? 'text-left' : 'text-right'}`}
-                    >
-                        <div className="chat-bubble">{message.message}</div>
-                    </div>
-                ))}
-            </>
-        )
-    }
 
     async function getWeatherInfo(input: string) {
         try {
@@ -63,7 +49,7 @@ function App() {
     return (
         <>
             <div className="m-10 rounded-xl border border-gray-200 px-10 py-5">
-                <ChatComponent />
+                <ChatComponent chat={chat} />
             </div>
             <div className="m-10 rounded-xl border border-gray-200 px-10 py-5">
                 {/* the input component */}
