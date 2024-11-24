@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from 'react'
 import { getWeatherInfo } from './utils/utils'
 import { ChatMessage } from './types'
 import { ChatComponent } from './components/ChatComponent'
+import { DarkModeToggle } from './components/DarkModeToggle'
 
 function App() {
     const [userInput, setUserInput] = useState('')
@@ -16,6 +17,8 @@ function App() {
     }
 
     const [chat, setChat] = useState<Array<ChatMessage>>([defaultMessage])
+
+    // const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark')
 
     async function handleSendClick() {
         // get the user input, store it in a variable and clear the input field
@@ -43,24 +46,30 @@ function App() {
         <>
             <div className="flex flex-row justify-center">
                 <div className="flex h-screen max-w-screen-lg flex-col p-5">
-                    <div className="text-left text-2xl font-bold">
-                        The WeatherBot
+                    <div className="mb-5 flex flex-row justify-between">
+                        <div className="text-left text-2xl font-bold">
+                            The WeatherBot
+                        </div>
+                        <DarkModeToggle />
                     </div>
-
                     <ChatComponent chat={chat} />
 
-                    <div className="flex flex-row items-end justify-evenly rounded-xl bg-neutral-700 p-5">
+                    <div className="flex flex-row items-end justify-evenly rounded-xl bg-neutral p-5">
                         {/* the input component */}
                         <textarea
-                            className="focus:box-shadow-none textarea textarea-ghost w-full resize-none border-none bg-inherit focus:resize-none focus:outline-none"
-                            placeholder="Ask me about the weather..."
+                            className="focus:box-shadow-none textarea textarea-ghost w-full resize-none border-none bg-inherit text-neutral-content focus:resize-none focus:text-neutral-content focus:outline-none"
+                            placeholder={
+                                chat.length == 1
+                                    ? 'Ask me about the weather...'
+                                    : ''
+                            }
                             value={userInput}
                             onChange={handleInputChange}
                             onKeyDown={handleKeyDown}
                         ></textarea>
 
                         <button
-                            className="btn rounded-full bg-base-100"
+                            className="btn rounded-full bg-base-100 text-xl"
                             onClick={handleSendClick}
                         >
                             ⬆

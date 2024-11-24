@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const weatherBotUrl = 'http://localhost:3000/test'
+const weatherBotUrl = 'http://localhost:3000/forecast'
 
 export async function getWeatherInfo(input: string) {
     try {

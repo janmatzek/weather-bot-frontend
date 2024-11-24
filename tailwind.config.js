@@ -8,6 +8,7 @@ export default {
     },
     plugins: [daisyui],
     daisyui: {
-        themes: ['coffee'],
+        themes: ['coffee', 'nord'],
     },
+    darkMode: ['selector', '[data-theme="coffee"]'],
 }
