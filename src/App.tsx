@@ -1,11 +1,10 @@
 import './App.css'
 import { ChangeEvent, useState } from 'react'
-import axios from 'axios'
+import { getWeatherInfo } from './utils/utils'
 import { ChatMessage } from './types'
-import { ChatComponent } from './ChatComponent'
+import { ChatComponent } from './components/ChatComponent'
 
 function App() {
-    const weatherBotUrl = 'http://localhost:3000/test'
     const [userInput, setUserInput] = useState('')
     const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
         setUserInput(event.target.value)
@@ -18,20 +17,6 @@ function App() {
 
     const [chat, setChat] = useState<Array<ChatMessage>>([defaultMessage])
 
-    async function getWeatherInfo(input: string) {
-        try {
-            const response = await axios.post(weatherBotUrl, {
-                userInput: input,
-            })
-            return response.data.message
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.log(error.response?.data.error)
-                console.log(error)
-                return error.response?.data.error
-            }
-        }
-    }
     async function handleSendClick() {
         // get the user input, store it in a variable and clear the input field
         const message = userInput
@@ -46,23 +31,42 @@ function App() {
         // add a new bubble with response from weatherBot to the chat component
         setChat((chat) => [...chat, { type: 'bot', message: weather }])
     }
+    async function handleKeyDown(
+        event: React.KeyboardEvent<HTMLTextAreaElement>
+    ) {
+        if (event.key === 'Enter') {
+            event.preventDefault()
+            handleSendClick()
+        }
+    }
     return (
         <>
-            <div className="m-10 rounded-xl border border-gray-200 px-10 py-5">
-                <ChatComponent chat={chat} />
-            </div>
-            <div className="m-10 rounded-xl border border-gray-200 px-10 py-5">
-                {/* the input component */}
-                <textarea
-                    className="textarea textarea-ghost"
-                    placeholder="Ask me about the weather..."
-                    value={userInput}
-                    onChange={handleInputChange}
-                ></textarea>
-                {/* disable button when input text area empty */}
-                <button className="btn rounded-full" onClick={handleSendClick}>
-                    ⬆
-                </button>
+            <div className="flex flex-row justify-center">
+                <div className="flex h-screen max-w-screen-lg flex-col p-5">
+                    <div className="text-left text-2xl font-bold">
+                        The WeatherBot
+                    </div>
+
+                    <ChatComponent chat={chat} />
+
+                    <div className="flex flex-row items-end justify-evenly rounded-xl bg-neutral-700 p-5">
+                        {/* the input component */}
+                        <textarea
+                            className="focus:box-shadow-none textarea textarea-ghost w-full resize-none border-none bg-inherit focus:resize-none focus:outline-none"
+                            placeholder="Ask me about the weather..."
+                            value={userInput}
+                            onChange={handleInputChange}
+                            onKeyDown={handleKeyDown}
+                        ></textarea>
+
+                        <button
+                            className="btn rounded-full bg-base-100"
+                            onClick={handleSendClick}
+                        >
+                            ⬆
+                        </button>
+                    </div>
+                </div>
             </div>
         </>
     )
