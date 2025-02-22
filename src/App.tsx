@@ -18,8 +18,6 @@ function App() {
 
     const [chat, setChat] = useState<Array<ChatMessage>>([defaultMessage])
 
-    // const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark')
-
     async function handleSendClick() {
         // get the user input, store it in a variable and clear the input field
         const message = userInput
