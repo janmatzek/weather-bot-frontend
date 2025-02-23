@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-// const weatherBotUrl = '/api/forecast/'
 const weatherBotUrl = '/api/forecast'
 
 export async function getWeatherInfo(input: string) {
